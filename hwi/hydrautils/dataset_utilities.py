@@ -1,6 +1,6 @@
 import hydra_connector
-from HydraServer.ui.code.model import JSONObject 
-from HydraServer.lib.objects import Dataset
+from .model import JSONObject 
+from hydra_base.lib.objects import Dataset
 
 def get_dataset(dataset_id, user_id):
     return JSONObject(hydra_connector.get_dataset(dataset_id, user_id=user_id))

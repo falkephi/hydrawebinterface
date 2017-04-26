@@ -1,11 +1,11 @@
 from flask import  request, session, redirect, url_for, escape, send_file, jsonify, Markup
 import json
 
-from HydraServer.util.hdb import login_user
+from hydra_base.util.hdb import login_user
 
-from HydraLib.HydraException import HydraError, PermissionError, ResourceNotFoundError
+from hydra_base.exceptions import HydraError, PermissionError, ResourceNotFoundError
 
-from HydraLib.hydra_dateutil import ordinal_to_timestamp
+from hydra_base.util.hydra_dateutil import ordinal_to_timestamp
 
 from flask import render_template
 
@@ -18,7 +18,7 @@ import urllib2
 
 basefolder = os.path.dirname(__file__)
 
-from HydraServer.lib.objects import JSONObject, ResourceScenario
+from hydra_base.lib.objects import JSONObject, ResourceScenario
 
 from hydrautils.app_utilities import delete_files_from_folder, create_zip_file, get_apps_properties
 
@@ -32,7 +32,7 @@ import hydrautils.user_utilities as userutils
 
 from . import app, appinterface, requires_login
 
-from HydraServer.db import commit_transaction, rollback_transaction, DBSession
+from hydra_base.db import commit_transaction, rollback_transaction, DBSession
 
 global DATA_FOLDER
 DATA_FOLDER = 'python/HydraServer/ui/data'

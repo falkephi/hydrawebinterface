@@ -1,6 +1,6 @@
 import hydra_connector as hc
 
-from HydraServer.lib.objects import JSONObject
+from hydra_base.lib.objects import JSONObject
 
 from network_utilities import get_resource
 import pandas as pd

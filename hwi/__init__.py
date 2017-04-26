@@ -3,17 +3,18 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import Flask
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from HydraServer.db import model
-from HydraLib import config
+from hydra_base.db import model
+from hydra_base import config
 from wtforms import PasswordField
 import os
 import bcrypt
 
+import logging
 import traceback
 
-from HydraLib.HydraException import HydraError
+from hydra_base.exceptions import HydraError
 
-from HydraServer.db import commit_transaction, rollback_transaction, close_session
+from hydra_base.db import commit_transaction, rollback_transaction, close_session
 
 from functools import wraps
 
@@ -47,13 +48,13 @@ def requires_login(func):
 
             return fn
         except HydraError as e:
-            log.critical(e)
+            logging.critical(e)
             rollback_transaction()
             traceback.print_exc(file=sys.stdout)
             code = "HydraError %s"%e.code
             raise Exception(e.message, code)
         except Exception, e:
-            log.exception(e)
+            logging.exception(e)
             app.logger.warn("Not logged in.")
             traceback.print_exc(file=sys.stdout)
             rollback_transaction()

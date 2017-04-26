@@ -1,11 +1,11 @@
-from HydraServer.lib import project as proj
-from HydraServer.lib import network as net
-from HydraServer.lib import template as tmpl
-from HydraServer.lib import scenario as scen
-from HydraServer.lib import attributes as attrs
-from HydraServer.lib import data  as data
-from HydraServer.lib import sharing  as sharing
-from HydraServer.lib import users  as users
+from hydra_base.lib import project as proj
+from hydra_base.lib import network as net
+from hydra_base.lib import template as tmpl
+from hydra_base.lib import scenario as scen
+from hydra_base.lib import attributes as attrs
+from hydra_base.lib import data  as data
+from hydra_base.lib import sharing  as sharing
+from hydra_base.lib import users  as users
 
 
 def load_network(network_id, user_id):
