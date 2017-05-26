@@ -32,7 +32,8 @@ import hydrautils.user_utilities as userutils
 
 from . import app, appinterface, requires_login
 
-from hydra_base.db import commit_transaction, rollback_transaction, DBSession
+import hydra_base.db as hdb
+hdb.connect()
 
 global DATA_FOLDER
 DATA_FOLDER = 'python/HydraServer/ui/data'
@@ -56,7 +57,7 @@ def index():
         return render_template('login.html', msg="")
     else:
         #Manually expire all db sessions?
-        DBSession.remove()
+        hdb.DBSession.remove()
         user_id = session_info['user_id']
         username = escape(session_info['username'])
         projects = projutils.get_projects(user_id)
@@ -181,7 +182,7 @@ def do_create_attr():
 
     newattr = attrutils.create_attr(attr_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return newattr.as_json()
 
@@ -197,7 +198,7 @@ def do_create_dataset():
 
     newdataset = datasetutils.create_dataset(dataset_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info(newdataset)
     return newdataset.as_json()
@@ -214,7 +215,7 @@ def do_create_template():
 
     newtemplate = tmplutils.create_template(template_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return newtemplate.as_json()
 
@@ -241,7 +242,7 @@ def do_load_template():
 
     newtemplate = tmplutils.load_template(text, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return newtemplate.as_json()
 
@@ -257,7 +258,7 @@ def do_update_template():
 
     newtemplate = tmplutils.update_template(template_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return newtemplate.as_json()
 
@@ -269,7 +270,7 @@ def do_delete_template(template_id):
 
     status = delete_template(template_id, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return status
 
@@ -281,7 +282,7 @@ def do_apply_template_to_network(template_id, network_id):
 
     apply_template_to_network(template_id, network_id, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return redirect(url_for('go_network', network_id=network_id))
 
@@ -319,7 +320,7 @@ def do_create_network():
 
     net = netutils.create_network(net_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return net.as_json()
 
@@ -333,7 +334,7 @@ def do_delete_network():
 
     netutils.delete_network(d['network_id'], user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return json.dumps({'status': 'OK'})
 
@@ -349,7 +350,7 @@ def do_create_project():
 
     proj = projutils.create_project(proj_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return proj.as_json()
 
@@ -363,7 +364,7 @@ def do_delete_project():
 
     projutils.delete_project(d['project_id'], user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return json.dumps({'status': 'OK'})
 
@@ -389,7 +390,7 @@ def do_share_project():
                     read_only,
                     share, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return json.dumps({'status': 'OK'})
 
@@ -415,7 +416,7 @@ def do_share_network():
                     read_only,
                     share, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return json.dumps({'status': 'OK'})
 
@@ -476,7 +477,7 @@ def go_network(network_id):
         s = scenarioutils.add_scenario(JSONObject(default_scenario), user_id)
         scenario = s
         network.scenarios.append(s)
-        commit_transaction()
+        hdb.commit_transaction()
     else:
         scenario = network.scenarios[0]
 
@@ -550,7 +551,7 @@ def do_delete_resource():
 
     netutils.delete_resource(resource_to_delete.id,resource_to_delete.resource_type, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info("Resource %s (%s) deleted.",resource_to_delete.id, resource_to_delete.resource_id)
 
@@ -568,7 +569,7 @@ def do_add_node():
 
     newnode = netutils.add_node(node_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info("Node %s added. New ID of %s",newnode.node_name, newnode.node_id)
 
@@ -587,7 +588,7 @@ def do_update_node():
 
     updatednode = netutils.update_node(node_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info("Node %s updated.",updatednode.node_name)
 
@@ -605,7 +606,7 @@ def do_delete_node():
 
     netutils.delete_node(node_id, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info("node %s deleted.",node_id)
 
@@ -623,7 +624,7 @@ def do_add_link():
 
     newlink = netutils.add_link(link_j, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info("Link %s added. New ID of %s",newlink.link_name, newlink.link_id)
 
@@ -641,7 +642,7 @@ def do_delete_link():
 
     netutils.delete_link(link_id, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     app.logger.info("link %s deleted.",link_id)
 
@@ -673,7 +674,7 @@ def do_add_group():
 
     newitems = scenarioutils.add_resource_group_items(scenario_id, json_items, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     newgroup.items = newitems
 
@@ -729,7 +730,7 @@ def do_update_group():
     newitems = scenarioutils.add_resource_group_items(scenario_id, json_items_to_add, user_id)
     scenarioutils.delete_resource_group_items(scenario_id, item_ids_to_delete, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     updatedgroup.items = items_to_keep + newitems
 
@@ -794,7 +795,7 @@ def do_update_resource_data():
 
     scenarioutils.update_resource_data(d['scenario_id'], rs_list, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return 'OK'
 
@@ -1020,7 +1021,7 @@ def do_clone_scenario():
 
     new_scenario = scenarioutils.clone_scenario(scenario_id, scenario_name, user_id)
 
-    commit_transaction()
+    hdb.commit_transaction()
 
     return new_scenario.as_json()
 
