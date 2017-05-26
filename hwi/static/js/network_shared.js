@@ -82,7 +82,7 @@ function set_visible_nodes(){
     min_y = y_coords[0]
     max_x = x_coords[x_coords.length-1]
     max_y = y_coords[y_coords.length-1]
-    centre = [(min_x + max_x)/2, (min_y + max_y)/2];
+    center = [(min_x + max_x)/2, (min_y + max_y)/2];
 
     links_.forEach(function(d){
         if (d.source == 45 || d.target == 45){

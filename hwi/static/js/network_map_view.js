@@ -1,7 +1,9 @@
 var dest = new proj4.Proj('EPSG:4326');
 var source = new proj4.Proj(projection_crs);
 
-var converted_center = proj4(source,dest,centre)
+center = [0, 0]
+
+var converted_center = proj4(source, dest, center)
 
 var mapzoom = Cookies.get('zoom')
 if (mapzoom == undefined){
