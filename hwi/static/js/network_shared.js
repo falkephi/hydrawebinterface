@@ -50,7 +50,7 @@ function set_visible_nodes(){
     var visible_node_ids = []
     var x_coords = []
     var y_coords = []
-    
+
     nodes_.forEach(function(d) {
         if (d.type.layout == undefined){
             d.type.layout = {}
@@ -75,7 +75,7 @@ function set_visible_nodes(){
         }
 
     });
-    
+
     x_coords.sort(compare_numbers)
     y_coords.sort(compare_numbers)
     min_x = x_coords[0]
@@ -92,7 +92,7 @@ function set_visible_nodes(){
             visible_links.push(d)
         }
     })
-    
+
 }
 
 set_visible_nodes()
@@ -125,89 +125,89 @@ function dragended(d)
         return
     }
     update_node(d.id, d.name, d.x, d.y);
- }
+}
 
 var normalnode = d3.symbol()
-         .size(function(d) { 
-             var height = d.type.layout.height
-             if (height == undefined){
-                 height = 10
-             }
-             var width = d.type.layout.width
-             if (width == undefined){
-                 width = 10
-             }
+    .size(function(d) { 
+        var height = d.type.layout.height
+        if (height == undefined){
+            height = 10
+        }
+        var width = d.type.layout.width
+        if (width == undefined){
+            width = 10
+        }
 
-             return height * width; } )
-         .type(function(d) { 
-           if
-           (d.type.layout.shape == "circle") { return d3.symbolCircle; } else if
-           (d.type.layout.shape == "diamond") { return d3.symbolDiamond;} else if
-           (d.type.layout.shape == "cross") { return d3.symbolCross;} else if
-           (d.type.layout.shape == "triangle") { return d3.symbolTriangle;} else if
-           (d.type.layout.shape == "square") { return d3.symbolSquare;} else if
-           (d.type.layout.shape == "star") { return d3.symbolStar;} else if
-           (d.type.layout.shape == "wye") { return d3.symbolWye;} else
-           { return d3.symbolCircle; }
-         })
+        return height * width; } )
+    .type(function(d) { 
+        if
+        (d.type.layout.shape == "circle") { return d3.symbolCircle; } else if
+        (d.type.layout.shape == "diamond") { return d3.symbolDiamond;} else if
+        (d.type.layout.shape == "cross") { return d3.symbolCross;} else if
+        (d.type.layout.shape == "triangle") { return d3.symbolTriangle;} else if
+        (d.type.layout.shape == "square") { return d3.symbolSquare;} else if
+        (d.type.layout.shape == "star") { return d3.symbolStar;} else if
+        (d.type.layout.shape == "wye") { return d3.symbolWye;} else
+        { return d3.symbolCircle; }
+    })
 
 
 var selectednode = d3.symbol()
-         .size(function(d) { 
-             var height = d.type.layout.height
-             if (height == undefined){
-                 height = 10
-             }
-             var width = d.type.layout.width
-             if (width == undefined){
-                 width = 10
-             }
+    .size(function(d) { 
+        var height = d.type.layout.height
+        if (height == undefined){
+            height = 10
+        }
+        var width = d.type.layout.width
+        if (width == undefined){
+            width = 10
+        }
 
-             return 1.5 * (height * width); } )
-         .type(function(d) { 
-           if
-           (d.type.layout.shape == "circle") { return d3.symbolCircle; } else if
-           (d.type.layout.shape == "diamond") { return d3.symbolDiamond;} else if
-           (d.type.layout.shape == "cross") { return d3.symbolCross;} else if
-           (d.type.layout.shape == "triangle") { return d3.symbolTriangle;} else if
-           (d.type.layout.shape == "square") { return d3.symbolSquare;} else if
-           (d.type.layout.shape == "star") { return d3.symbolStar;} else if
-           (d.type.layout.shape == "wye") { return d3.symbolWye;} else
-           { return d3.symbolCircle; }
-         })
+        return 1.5 * (height * width); } )
+    .type(function(d) { 
+        if
+        (d.type.layout.shape == "circle") { return d3.symbolCircle; } else if
+        (d.type.layout.shape == "diamond") { return d3.symbolDiamond;} else if
+        (d.type.layout.shape == "cross") { return d3.symbolCross;} else if
+        (d.type.layout.shape == "triangle") { return d3.symbolTriangle;} else if
+        (d.type.layout.shape == "square") { return d3.symbolSquare;} else if
+        (d.type.layout.shape == "star") { return d3.symbolStar;} else if
+        (d.type.layout.shape == "wye") { return d3.symbolWye;} else
+        { return d3.symbolCircle; }
+    })
 
 
 
 var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-  return "<strong>name: </strong><span style='color:red'>" + d.name+" </span>" +"<strong>type: </strong><span style='color:red'>" + d.type.type_name + "</span>";
-  })
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+        return "<strong>name: </strong><span style='color:red'>" + d.name+" </span>" +"<strong>type: </strong><span style='color:red'>" + d.type.type_name + "</span>";
+    })
 
 
 function nodes_mouse_double_click(d)
 {
 
-  d3.event.stopPropagation();
+    d3.event.stopPropagation();
 
-  d3.select("path.selected").attr("d", normalnode)
-  d3.selectAll("path.selected").classed("selected", false)
+    d3.select("path.selected").attr("d", normalnode)
+    d3.selectAll("path.selected").classed("selected", false)
 
-  d3.selectAll('.node')  //here's how you get all the nodes
-    .each(function(d) {
-        d3.select(this).on(".drag", null);
-    });
+    d3.selectAll('.node')  //here's how you get all the nodes
+        .each(function(d) {
+            d3.select(this).on(".drag", null);
+        });
     d3.select(this).attr("d", selectednode)
     d3.select(this).classed("selected", true)
     d3.select(this).call(drag);
 
-   d3.event.stopPropagation();
+    d3.event.stopPropagation();
 }
 
 
 function nodes_mouse_click(d) {
-   // unenlarge target node
+    // unenlarge target node
     console.log(d)
     $("#data").html("No Resource Selected.")
     current_res = null; 
@@ -224,24 +224,24 @@ function nodes_mouse_click(d) {
     var selectedlinktype = d3.select('.linkbutton.active div')
 
     if (!selectedlinktype.empty()){
-       if (drag_line == null){
+        if (drag_line == null){
             drag_line = svg.append('path')
                 .attr('class', 'link dragline')
-                //.style('marker-end', 'url(#end-arrow)')
+            //.style('marker-end', 'url(#end-arrow)')
             start_node = d3.select(this);
         }else{
 
-           var type_id = d3.select('.linkbutton.active div').property('title')
+            var type_id = d3.select('.linkbutton.active div').property('title')
 
-           target_datum = d3.select(this).datum()
+            target_datum = d3.select(this).datum()
 
-           source_datum = start_node.datum()
+            source_datum = start_node.datum()
 
-           if (source_datum.id == target_datum.id){
+            if (source_datum.id == target_datum.id){
                 drag_line = null
                 start_node = null
                 return
-           }
+            }
 
             for (var i=0; i<template.templatetypes.length; i++){
                 if (parseInt(type_id) == template.templatetypes[i]['type_id']){
@@ -249,7 +249,7 @@ function nodes_mouse_click(d) {
                 }
             }
 
-           var linkname =  source_datum.name + " to " + target_datum.name
+            var linkname =  source_datum.name + " to " + target_datum.name
 
             link_id = add_link(linkname, type_id, source_datum, target_datum)
 
@@ -271,46 +271,46 @@ function nodes_mouse_click(d) {
 
             redraw_links()
 
-            
-        }
-}
 
-if (d3.event != null){
-    d3.event.stopPropagation();
-}
+        }
+    }
+
+    if (d3.event != null){
+        d3.event.stopPropagation();
+    }
 
 
 }
 
 
 function links_mouse_click(d) {
-   unHighlightAllLinks()
-   highlightLink(this)
-   document.getElementById('search').value=d.name;
-   tip.hide(d);
-   get_resource_data('LINK', d)
-   if (d3.event != null){
+    unHighlightAllLinks()
+    highlightLink(this)
+    document.getElementById('search').value=d.name;
+    tip.hide(d);
+    get_resource_data('LINK', d)
+    if (d3.event != null){
         d3.event.stopPropagation();
     }
 }
 
 function highlightNode(node){
-   d3.select(node).style('stroke',  function(d) { return 'red' });
-   d3.select(node).style('stroke-width',  function(d) { return '4px' });
+    d3.select(node).style('stroke',  function(d) { return 'red' });
+    d3.select(node).style('stroke-width',  function(d) { return '4px' });
 }
 
 function unHighlightNode(node){
-   d3.select(node).style('stroke',  function(d) { return '' });
-   d3.select(node).style('stroke-width',  function(d) { return '' });
+    d3.select(node).style('stroke',  function(d) { return '' });
+    d3.select(node).style('stroke-width',  function(d) { return '' });
 }
 function unHighlightAllNodes(){
-   d3.selectAll(".node path").style('stroke',  function(d) { return '' });
-   d3.selectAll(".node path").style('stroke-width',  function(d) { return '' });
+    d3.selectAll(".node path").style('stroke',  function(d) { return '' });
+    d3.selectAll(".node path").style('stroke-width',  function(d) { return '' });
 }
 
 function highlightLink(link){
     d3.select(link).style('stroke-width',  function(d) {return '4px'}) 
-   d3.select(link).style('stroke',  function(d) { return 'red' });
+    d3.select(link).style('stroke',  function(d) { return 'red' });
 }
 
 function unHighlightLink(link){
@@ -332,12 +332,12 @@ function unHighlightAllLinks(){
     })
 }
 function node_mouse_in(d) {
-   // show  resource tip and change border
-   if(display)
+    // show  resource tip and change border
+    if(display)
     {
         tip.show(d);
         highlightNode(this);
-   }
+    }
 }
 
 function node_mouse_out(d) {
@@ -348,7 +348,7 @@ function node_mouse_out(d) {
     }
 }
 function link_mouse_in(d) {
-   // show  resource tip and change border
+    // show  resource tip and change border
     if(display)
     {
         tip.show(d);
@@ -357,13 +357,13 @@ function link_mouse_in(d) {
 }
 
 function link_mouse_out(d) {
-   // hide resource tip and change border
+    // hide resource tip and change border
 
-   if(current_res == null || d!=current_res)
-   {
-       tip.hide(d);
-       unHighlightLink(this)
-   }
+    if(current_res == null || d!=current_res)
+    {
+        tip.hide(d);
+        unHighlightLink(this)
+    }
 }
 
 function findResource(event, ui) {
@@ -383,34 +383,34 @@ function findResource(event, ui) {
     var selected = link.filter(function (d, i){
         if(d.name == selectedVal){
             d3.selectAll('#schematiclink_'+d.id).each(links_mouse_click)
-            }
+        }
     })
 }
 
 function changeNodesLableVisibility(cb) {
     if (cb.checked)
-        {
-            display=false;
-            svg.selectAll("text").style("visibility", "visible");
-        }
-    else
-        {
-            display=true;
-            svg.selectAll("text").style("visibility", "hidden");
-        }
+    {
+        display=false;
+        svg.selectAll("text").style("visibility", "visible");
     }
+    else
+    {
+        display=true;
+        svg.selectAll("text").style("visibility", "hidden");
+    }
+}
 
 function changeLinkDirectionVisibility(cb) {
     if (cb.checked)
-        {
-            display=false;
-            svg.selectAll("line").style("marker-end",  "url(#suit)");
-        }
+    {
+        display=false;
+        svg.selectAll("line").style("marker-end",  "url(#suit)");
+    }
     else
-        {
-            display=true;
-            svg.selectAll("line").style("marker-end", 'None');
-        }
+    {
+        display=true;
+        svg.selectAll("line").style("marker-end", 'None');
+    }
 }
 
 
@@ -426,7 +426,7 @@ var add_node = function(name, type_id, x, y){
     var error = function(resp){
         alert(resp)    
     }
-    
+
     var nodedata = {
         name: name,
         network_id: network_id,
@@ -435,12 +435,12 @@ var add_node = function(name, type_id, x, y){
         y : y
     }
     $.ajax({
-       url:  add_node_url,
-       type: 'POST',
-       data : JSON.stringify(nodedata),
-       success: success,
-       error: error,
-       async: false
+        url:  add_node_url,
+        type: 'POST',
+        data : JSON.stringify(nodedata),
+        success: success,
+        error: error,
+        async: false
     })
 
     return node_id;
@@ -464,14 +464,14 @@ var remove_svg_node = function(d){
 }
 
 function delete_resource(d)
-    {
+{
     //to do connect to the server and update node location
     resource_id = d.id
     resource_type = d.res_type
     var success = function(resp){
         console.log(resource_type + resource_id +" deleted.")
         remove_svg_node(d)//Also removes connected Links
-        
+
         redraw_nodes()
         redraw_links()
     }
@@ -479,25 +479,25 @@ function delete_resource(d)
     var error = function(resp){
         d3.select("#log").append("An error occurred deleting the node")
     }
-    
+
     var nodedata = {
         id: d.id,
         resource_type : d.res_type,
     }
 
     $.ajax({
-       url:  delete_resource_url,
-       type: 'POST',
-       data : JSON.stringify(nodedata),
-       success: success,
-       error: error,
-       async: false,
+        url:  delete_resource_url,
+        type: 'POST',
+        data : JSON.stringify(nodedata),
+        success: success,
+        error: error,
+        async: false,
     })
 
-    }
+}
 
 function update_node(node_id, name, x, y)
-    {
+{
     //to do connect to the server and update node location
 
     var success = function(resp){
@@ -507,7 +507,7 @@ function update_node(node_id, name, x, y)
     var error = function(resp){
         alert(resp)    
     }
-    
+
     var nodedata = {
         name: name,
         id: node_id,
@@ -516,16 +516,16 @@ function update_node(node_id, name, x, y)
     }
 
     $.ajax({
-       url:  update_node_url,
-       type: 'POST',
-       data : JSON.stringify(nodedata),
-       success: success,
-       error: error,
-       async: false,
+        url:  update_node_url,
+        type: 'POST',
+        data : JSON.stringify(nodedata),
+        success: success,
+        error: error,
+        async: false,
     })
 
     return node_id;
-    }
+}
 
 var add_link = function(name, type_id, source, target){
     var link_id = null;
@@ -538,7 +538,7 @@ var add_link = function(name, type_id, source, target){
     var error = function(resp){
         alert(resp)    
     }
-    
+
     var linkdata = {
         name: name,
         network_id: network_id,
@@ -547,12 +547,12 @@ var add_link = function(name, type_id, source, target){
         node_2_id : target.id
     }
     $.ajax({
-       url:  add_link_url,
-       type: 'POST',
-       data : JSON.stringify(linkdata),
-       success: success,
-       error: error,
-       async: false
+        url:  add_link_url,
+        type: 'POST',
+        data : JSON.stringify(linkdata),
+        success: success,
+        error: error,
+        async: false
     })
 
     return link_id;
